@@ -9,19 +9,21 @@ module.exports = function(config) {
 
 
     // frameworks to use
-    frameworks: ['mocha'],
+    frameworks: ['requirejs', 'mocha'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      'js/*.js',
-      'test/*Spec.js'
+      { pattern: 'libs/*.js', included: false },
+      { pattern: 'js/*.js', included: false },
+      { pattern: 'test/*Spec.js', included: false },
+      'test/main.js'
     ],
 
 
     // list of files to exclude
     exclude: [
-      
+
     ],
 
 
