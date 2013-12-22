@@ -54,11 +54,13 @@ define(function (require) {
 				createdElement = null;
 
 			beforeEach(function () {
-				createdElement = {};
+				createdElement = {
+					addEventListener: sinon.spy()
+				};
 
 				sinon.stub(document, "createElement").returns(createdElement);
 
-				returnedScript = script.create('src');
+				returnedScript = script.create("src");
 			});
 
 			afterEach(function () {
@@ -71,16 +73,41 @@ define(function (require) {
 			});
 
 			describe("AND providing an onload callback", function () {
-				var callback = null;
+				var callback = null,
+					onload = null;
 
 				beforeEach(function () {
-					callback = function () {};
+					createdElement.addEventListener.reset();
+					callback = sinon.spy();
+					returnedScript = script.create("src", callback);
 
-					returnedScript = script.create('src', callback);
+					onload = createdElement.addEventListener.getCall(0).args[1];
+					onload(1, 2, 3);
 				});
 
-				it("THEN returns a script with the onload callback assigned", function () {
-					expect(returnedScript.onload).to.equal(callback);
+				it("THEN returns a script that listens to the onload event", function () {
+					expect(createdElement.addEventListener.getCall(0).args[0]).to.equal("load");
+					expect(callback.calledWith(1, 2, 3)).to.be.true;
+				});
+
+				describe("AND providing a scope to the onload callback", function () {
+					var scope = null;
+
+					beforeEach(function () {
+						createdElement.addEventListener.reset();
+						scope = {};
+
+						callback.reset();
+
+						script.create("src", callback, scope);
+
+						onload = createdElement.addEventListener.getCall(0).args[1];
+						onload();
+					});
+
+					it("THEN executes the callback in scope", function () {
+						expect(callback.calledOn(scope)).to.be.true;
+					});
 				});
 			});
 		});
