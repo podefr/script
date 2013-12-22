@@ -3,7 +3,6 @@
  * Copyright(c) 2013 Olivier Scherrer <pode.fr@gmail.com>
  * MIT Licensed
  */
-
 define(function (require) {
 
 	/**
