@@ -1,7 +1,7 @@
 {
  "name": "script-utils",
  "description": "script utils for creating script element and adding/removing them from <head>",
- "version": "0.0.1",
+ "version": "0.0.2",
  "homepage": "https://github.com/podefr/script",
  "licenses": [{
   "type":"MIT",
@@ -11,6 +11,10 @@
  	"LICENSE",
  	"script.js"
  ],
+ "devDependencies": {
+ 	"chai": ">=1.8.1",
+ 	"sinon": ">=1.7.3"
+ },
  "author": "Olivier Scherrer <pode.fr@gmail.com>",
  "keywords": ["script", "utils"],
  "repository": {
@@ -20,5 +24,8 @@
  "bugs": {
   "url": "https://github.com/podefr/script/issues"
  },
- "main":"script.js"
+ "main":"script.js",
+ "scripts": {
+ 	"test": "mocha"
+ }
 }
