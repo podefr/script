@@ -9,7 +9,8 @@
  }],
  "files": [
  	"LICENSE",
- 	"script-utils.js"
+ 	"script-utils.min.js",
+ 	"script-utils-browser.js"
  ],
  "devDependencies": {
  	"chai": ">=1.8.1",
