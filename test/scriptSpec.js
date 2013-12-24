@@ -3,119 +3,119 @@
  * Copyright(c) 2013 Olivier Scherrer <pode.fr@gmail.com>
  * MIT Licensed
  */
-define(function (require) {
+GLOBAL.document = {
+	querySelector: function () {},
+	createElement: function () {}
+};
 
-	var chai = require("chai"),
-		script = require("script");
+var chai = require("chai"),
+	script = require("../js/script"),
+	sinon = require("sinon");
 
-		require("sinon");
+var expect = chai.expect;
 
-	var expect = chai.expect;
+describe("GIVEN script and document", function(){
+	describe("WHEN calling append with a scriptElement", function () {
+		var appendChild = null,
+			scriptElement = null;
 
-	describe("GIVEN script", function(){
-		describe("WHEN calling append with a scriptElement", function () {
-			var appendChild = null,
-				scriptElement = null;
-
-			beforeEach(function () {
-				appendChild = sinon.spy();
-				sinon.stub(document, "querySelector").returns({
-					appendChild: appendChild
-				});
-				scriptElement = document.createElement("script");
-				script.append(scriptElement);
+		beforeEach(function () {
+			appendChild = sinon.spy();
+			sinon.stub(document, "querySelector").returns({
+				appendChild: appendChild
 			});
-
-			it("THEN appends the script to the document header", function () {
-				expect(document.querySelector.calledWith("head")).to.be.true;
-				expect(appendChild.calledWith(scriptElement)).to.be.true;
-			});
-
-			afterEach(function () {
-				document.querySelector.restore();
-			});
+			scriptElement = {};
+			script.append(scriptElement);
 		});
 
-		describe("WHEN calling remove with a scriptElement", function () {
-			var scriptElement = null;
+		it("THEN appends the script to the document header", function () {
+			expect(document.querySelector.calledWith("head")).to.be.true;
+			expect(appendChild.calledWith(scriptElement)).to.be.true;
+		});
 
-			beforeEach(function () {
-				scriptElement = {
-					parentElement: {
-						removeChild: sinon.spy()
-					}
+		afterEach(function () {
+			document.querySelector.restore();
+		});
+	});
+
+	describe("WHEN calling remove with a scriptElement", function () {
+		var scriptElement = null;
+
+		beforeEach(function () {
+			scriptElement = {
+				parentElement: {
+					removeChild: sinon.spy()
 				}
+			}
 
-				script.remove(scriptElement);
-			});
-
-			it("THEN removes the script from its parent", function () {
-				expect(scriptElement.parentElement.removeChild.calledWith(scriptElement)).to.be.true;
-			});
+			script.remove(scriptElement);
 		});
 
-		describe("WHEN calling create", function () {
-			var returnedScript = null,
-				createdElement = null;
+		it("THEN removes the script from its parent", function () {
+			expect(scriptElement.parentElement.removeChild.calledWith(scriptElement)).to.be.true;
+		});
+	});
+
+	describe("WHEN calling create", function () {
+		var returnedScript = null,
+			createdElement = null;
+
+		beforeEach(function () {
+			createdElement = {
+				addEventListener: sinon.spy()
+			};
+
+			sinon.stub(document, "createElement").returns(createdElement);
+
+			returnedScript = script.create("src");
+		});
+
+		afterEach(function () {
+			document.createElement.restore();
+		});
+
+		it("THEN returns a script element with the given src", function () {
+			expect(document.createElement.calledWith("script")).to.be.true;
+			expect(returnedScript).to.equal(createdElement);
+		});
+
+		describe("AND providing an onload callback", function () {
+			var callback = null,
+				onload = null;
 
 			beforeEach(function () {
-				createdElement = {
-					addEventListener: sinon.spy()
-				};
+				createdElement.addEventListener.reset();
+				callback = sinon.spy();
+				returnedScript = script.create("src", callback);
 
-				sinon.stub(document, "createElement").returns(createdElement);
-
-				returnedScript = script.create("src");
+				onload = createdElement.addEventListener.getCall(0).args[1];
+				onload(1, 2, 3);
 			});
 
-			afterEach(function () {
-				document.createElement.restore();
+			it("THEN returns a script that listens to the onload event", function () {
+				expect(createdElement.addEventListener.getCall(0).args[0]).to.equal("load");
+				expect(callback.calledWith(1, 2, 3)).to.be.true;
 			});
 
-			it("THEN returns a script element with the given src", function () {
-				expect(document.createElement.calledWith("script")).to.be.true;
-				expect(returnedScript).to.equal(createdElement);
-			});
-
-			describe("AND providing an onload callback", function () {
-				var callback = null,
-					onload = null;
+			describe("AND providing a scope to the onload callback", function () {
+				var scope = null;
 
 				beforeEach(function () {
 					createdElement.addEventListener.reset();
-					callback = sinon.spy();
-					returnedScript = script.create("src", callback);
+					scope = {};
+
+					callback.reset();
+
+					script.create("src", callback, scope);
 
 					onload = createdElement.addEventListener.getCall(0).args[1];
-					onload(1, 2, 3);
+					onload();
 				});
 
-				it("THEN returns a script that listens to the onload event", function () {
-					expect(createdElement.addEventListener.getCall(0).args[0]).to.equal("load");
-					expect(callback.calledWith(1, 2, 3)).to.be.true;
-				});
-
-				describe("AND providing a scope to the onload callback", function () {
-					var scope = null;
-
-					beforeEach(function () {
-						createdElement.addEventListener.reset();
-						scope = {};
-
-						callback.reset();
-
-						script.create("src", callback, scope);
-
-						onload = createdElement.addEventListener.getCall(0).args[1];
-						onload();
-					});
-
-					it("THEN executes the callback in scope", function () {
-						expect(callback.calledOn(scope)).to.be.true;
-					});
+				it("THEN executes the callback in scope", function () {
+					expect(callback.calledOn(scope)).to.be.true;
 				});
 			});
 		});
 	});
-
 });
