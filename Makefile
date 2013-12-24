@@ -1,10 +1,14 @@
-all: clean script.js
+all: clean script-utils.js browser
 
 clean:
-	rm -f script.js
+	rm -f ./script-utils.min.js
+	rm -f ./script-utils-browser.js
 
-script.js:
-	cat license-mini >> script.js
-	uglifyjs js/script.js >> script.js
+script-utils.js:
+	cat license-mini >> script-utils.min.js
+	uglifyjs js/script-utils.js >> script-utils.min.js
 
-.PHONY: clean
+browser:
+	browserify -r ./script-utils.min.js:script-utils -o script-utils-browser.js
+
+.PHONY: all clean browser

@@ -9,7 +9,7 @@
  }],
  "files": [
  	"LICENSE",
- 	"script.js"
+ 	"script-utils.js"
  ],
  "devDependencies": {
  	"chai": ">=1.8.1",
@@ -24,7 +24,8 @@
  "bugs": {
   "url": "https://github.com/podefr/script/issues"
  },
- "main":"script.js",
+ "main":"script-utils.min.js",
+ "browser": "script-utils-browser.js",
  "scripts": {
  	"test": "mocha"
  }

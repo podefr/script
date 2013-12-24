@@ -3,7 +3,8 @@
  * Copyright(c) 2013 Olivier Scherrer <pode.fr@gmail.com>
  * MIT Licensed
  */
- "use strict";
+"use strict";
+
 /**
  * Script utils for creating script tags, appending them to <head>
  * and removing them. Create also accepts an onload callback that can be executed in scope
@@ -21,7 +22,7 @@ module.exports = {
 	 * Remove a script from <head>
 	 * @param {Object} a script element to remove
 	 */
-	remove: function remove(script) {
+	remove: function remove(script) {
 		script.parentElement.removeChild(script);
 	},
 

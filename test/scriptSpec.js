@@ -9,7 +9,7 @@ GLOBAL.document = {
 };
 
 var chai = require("chai"),
-	script = require("../js/script"),
+	script = require("../js/script-utils"),
 	sinon = require("sinon");
 
 var expect = chai.expect;
