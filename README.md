@@ -1,7 +1,7 @@
 script
 ======
 
-Script utils to create script elements, add and remove them from <head>
+Script utils to create script elements, add and remove them from &lt;head&gt;
 
 Installation
 =============
@@ -14,7 +14,7 @@ In the browser:
 ===============
 
 ```html
-<script src="script-utils-browser"></script>
+&lt;script src="script-utils-browser"&gt;&lt;/script&gt;
 ```
 
 Usage
@@ -28,10 +28,10 @@ var newScript = script.create("source/to/file", function onload() {
 	// do something when script is loaded;
 }, this);
 
-// Append the script to <head>
+// Append the script to &lt;head&gt;
 script.append(newScript);
 
-// Remove script from <head>
+// Remove script from &lt;head&gt;
 script.remove(newScript);
 
 ```
