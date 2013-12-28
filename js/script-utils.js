@@ -1,5 +1,5 @@
 /**
- * script.js - http://podefr.github.com/script/
+ * script.js - https://github.com/podefr/script
  * Copyright(c) 2013 Olivier Scherrer <pode.fr@gmail.com>
  * MIT Licensed
  */
