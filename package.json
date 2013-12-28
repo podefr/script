@@ -13,6 +13,7 @@
  	"script-utils-browser.js"
  ],
  "devDependencies": {
+ 	"quick-dom": ">=0.0.1",
  	"chai": ">=1.8.1",
  	"sinon": ">=1.7.3"
  },

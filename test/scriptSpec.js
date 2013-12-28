@@ -3,10 +3,7 @@
  * Copyright(c) 2013 Olivier Scherrer <pode.fr@gmail.com>
  * MIT Licensed
  */
-GLOBAL.document = {
-	querySelector: function () {},
-	createElement: function () {}
-};
+require("quick-dom");
 
 var chai = require("chai"),
 	script = require("../js/script-utils"),
