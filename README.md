@@ -14,7 +14,7 @@ In the browser:
 ===============
 
 ```html
-&lt;script src="script-utils-browser"&gt;&lt;/script&gt;
+<script src="script-utils-browser.js"></script>
 ```
 
 Usage
